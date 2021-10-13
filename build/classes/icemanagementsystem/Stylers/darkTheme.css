@@ -1,0 +1,110 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 24, 2021, 5:26:42 PM
+    Author     : carambola
+*/
+.jfx-tool-bar{
+    -fx-background-color: rgb(30,30,30);
+}
+
+.icon-buttons{
+    -fx-background-color: rgb(30, 30, 30);
+}
+
+.icon-buttons:hover{
+    -fx-background-color: rgb(94, 92, 92);
+}
+
+.search-box-cover{
+    -fx-background-color:white;
+    -fx-background-radius:5;
+    -fx-border-radius:5;
+    -fx-border-width:1;
+    -fx-border-color:white;
+}
+
+.jfx-text-field{
+    -jfx-unfocus-color: white;
+    -fx-prompt-text-fill: whitesmoke;
+    -fx-text-fill: white;
+    -fx-font-size: 15;
+}
+
+.text-field-AS{
+    -fx-background-color: white;
+    -fx-font-size: 13;
+    -fx-text-fill: black;
+    -fx-prompt-text-fill: black;
+}
+
+.jfx-text-field-AS{
+    -jfx-focus-color: white;
+    -jfx-unfocus-color: white;
+    -fx-text-fill: black;
+    -fx-prompt-text-fill: black;
+}
+
+.combo-box{
+    -fx-font-size: 15;
+}
+
+.next-btn{
+    -fx-background-color: blue;
+    -fx-text-fill: white;
+    -fx-font-size:15;
+}
+
+.icons{
+    -fx-fill: whitesmoke;
+}
+
+VBox,HBox{
+    -fx-background-color: rgb(30,30,30);
+}
+
+.body{
+    -fx-background-color: rgb(50,50,50);
+}
+
+.tab-pane *.tab-header-area *.tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab-pane{
+    -fx-background-color: rgb(50,50,50);
+}
+
+.tab {
+    -fx-background-color: rgb(50,50,50);
+}
+
+.tab:selected {
+    -fx-background-color: whitesmoke;
+}
+
+.jfx-radio-button {
+    -fx-text-fill: whitesmoke;
+    -fx-font-size:15;
+}
+
+.myDialog {
+    -fx-background-color: rgb(30,30,30);
+}
+
+.myDialog > *.label.content{
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+.myDialog:header *.header-panel{
+    -fx-background-color: rgb(10,10,10);
+}
+
+.myDialog:header *.header-panel *.label{
+    -fx-font-size:14px;
+    -fx-text-fill: white;
+}

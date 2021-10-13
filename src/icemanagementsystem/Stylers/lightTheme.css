@@ -1,0 +1,106 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 24, 2021, 5:26:56 PM
+    Author     : carambola
+*/
+.jfx-tool-bar{
+    -fx-background-color: rgb(223,223,223);
+}
+
+.icon-buttons{
+    -fx-background-color: rgb(223,223,223);
+}
+
+.icon-buttons:hover{
+    -fx-background-color: rgb(210,210,210);
+}
+
+.search-box-cover{
+    -fx-background-color:white;
+    -fx-background-radius:5;
+    -fx-border-radius:5;
+    -fx-border-width:1;
+    -fx-border-color:white;
+}
+
+.combo-box{
+    -fx-font-size: 15;
+}
+
+.jfx-text-field{
+    -jfx-unfocus-color: black;
+    -fx-prompt-text-fill: black;
+    -fx-text-fill: black;
+    -fx-font-size: 15;
+}
+
+.text-field-AS{
+    -fx-background-color: white;
+    -fx-font-size: 13;
+}
+
+.jfx-text-field-AS{
+    -jfx-focus-color: white;
+    -jfx-unfocus-color: white;
+}
+
+.next-btn{
+    -fx-background-color: blue;
+    -fx-text-fill: white;
+    -fx-font-size:15;
+}
+
+.icons{
+    -fx-fill: black;
+}
+
+VBox,HBox{
+    -fx-background-color: rgb(223,223,223);
+}
+
+.body{
+    -fx-background-color: whitesmoke;
+}
+
+.tab-pane *.tab-header-area *.tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab-pane{
+    -fx-background-color: rgb(225,225,225);
+}
+
+.tab {
+    -fx-background-color: rgb(225,225,225);
+}
+
+.tab:selected {
+    -fx-background-color: lightskyblue;
+}
+
+.jfx-radio-button {
+    -fx-text-fill: black;
+    -fx-font-size:15;
+}
+
+.myDialog {
+    -fx-background-color: rgb(223,223,223);
+}
+
+.myDialog > *.label.content{
+    -fx-font-size: 14px;
+    -fx-text-fill: black;
+}
+
+.myDialog:header *.header-panel{
+    -fx-background-color: rgb(75,75,75);
+}
+
+.myDialog:header *.header-panel *.label{
+    -fx-font-size:14px;
+    -fx-text-fill: black;
+}
