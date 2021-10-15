@@ -84,7 +84,7 @@ public class AddAccount {
         nextButton.setOnAction(e->{
             try {
                 NewIntern newIntern = new NewIntern();
-                newIntern.addIntern(fullNameField, telephone_number, gender_male, gender_female, courseBox, datePicker,stage);
+                newIntern.addIntern(fullNameField, telephone_number, gender_male, gender_female, courseBox, datePicker);
             } catch (SQLException ex) {
                 Logger.getLogger(AddAccount.class.getName()).log(Level.SEVERE, null, ex);
             }

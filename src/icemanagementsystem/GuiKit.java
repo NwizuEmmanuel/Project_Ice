@@ -16,6 +16,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.ToggleGroup;
@@ -24,6 +26,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -54,6 +57,11 @@ public class GuiKit {
     private Scene settingScene;
     private VBox container_theme;
     private VBox addAccountBox;
+    private HBox internBox;
+    private VBox internHome;
+    private MaterialDesignIconView iconView;
+    private ScrollPane scrollPane;
+    private Label info;
 
     public Scene scene(Parent p) {
         tp = new ThemePainter();
@@ -70,16 +78,26 @@ public class GuiKit {
     }
 
     public BorderPane borderPane() {
+        VBox statsHome = new VBox();
+        Label statsInfo = new Label();
+        HBox statsBox = new HBox();
+        iconView = new MaterialDesignIconView();
+        internHome = new VBox();
+        internBox = new HBox();
+        info = new Label();
+        scrollPane = new ScrollPane();
         ViewInterns interns = new ViewInterns();
+        internStats iStats = new internStats();
         rootBorderPane = new BorderPane();
         rootBorderPane.getStyleClass().add("body");
         rootBorderPane.setTop(toolbar());
-        rootBorderPane.setCenter(interns.internsBox());
+        rootBorderPane.setCenter(interns.internsBox(internBox, internHome, scrollPane, info,iconView));
+        rootBorderPane.setRight(iStats.stats(statsHome, statsInfo, statsBox));
         return rootBorderPane;
     }
 
     public JFXToolbar toolbar() {
-        MaterialDesignIconView searchBtnIcon = new MaterialDesignIconView(MaterialDesignIcon.BOOK_OPEN_PAGE_VARIANT,"30");
+        MaterialDesignIconView searchBtnIcon = new MaterialDesignIconView(MaterialDesignIcon.BOOK_OPEN_PAGE_VARIANT, "30");
         searchBtnIcon.getStyleClass().add("icons");
         JFXButton searchBtn = new JFXButton(null);
         searchBtn.setGraphic(searchBtnIcon);
@@ -122,7 +140,7 @@ public class GuiKit {
         settingIconBtn.getStyleClass().add("icon-buttons");
         settingIconBtn.setOnAction(e -> {
             Stage stage = new Stage();
-            settingScene = new Scene(tabPane(), 400, 400);
+            settingScene = new Scene(tabPane(stage), 400, 400);
             tp = new ThemePainter();
             prefs = Preferences.userRoot().node(tp.getClass().getName());
             if ("Light".equals(prefs.get("manager", "Light"))) {
@@ -164,7 +182,7 @@ public class GuiKit {
         return rootToolbar;
     }
 
-    public TabPane tabPane() {
+    public TabPane tabPane(Stage stage) {
         lightThemeBtn = new JFXRadioButton("Light theme");
         lightThemeBtn.setFocusTraversable(false);
         darkThemeBtn = new JFXRadioButton("Dark theme");
@@ -193,25 +211,43 @@ public class GuiKit {
         lightThemeBtn.setOnAction(e -> {
             ThemePainter painter = new ThemePainter();
             painter.paintLight();
+            internHome.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
+            internBox.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
             rootscene.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
             settingScene.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
             // for children in tab for theme(container_theme)
             container_theme.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
+            scrollPane.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
+            info.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
             rootscene.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
             settingScene.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
             container_theme.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
+            internBox.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
+            internHome.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
+            info.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
+            scrollPane.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
+            stage.close();
         });
 
         darkThemeBtn.setOnAction(e -> {
             ThemePainter painter = new ThemePainter();
             painter.paintDark();
+            internHome.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
+            internBox.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
             rootscene.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
             settingScene.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
+            info.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
+            scrollPane.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
             // for children in tab for theme(container_theme)
             container_theme.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
             rootscene.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
             settingScene.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
             container_theme.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
+            internBox.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
+            internHome.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
+            info.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
+            scrollPane.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
+            stage.close();
         });
 
         theme_tab.setContent(container_theme);
