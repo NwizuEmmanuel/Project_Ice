@@ -1,0 +1,27 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 16, 2021, 9:51:16 AM
+    Author     : starfriut
+*/
+
+.myFrame{
+    -fx-background-image: url(/icemanagementsystem/images/picture_3.jpg);
+    -fx-background-repeat: stretch;
+    -fx-background-size: 100%;
+    -fx-background-position: center center;
+    /*-fx-effect: dropshadow(one-pass-box,black,0,0,0,0);*/
+}
+
+.mySubFrame{
+    -fx-opacity: 0.5;
+}
+
+.label{
+    -fx-text-fill: gray;
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+}

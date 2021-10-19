@@ -9,14 +9,19 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -81,10 +86,15 @@ public class AddAccount {
         HBox.setHgrow(courseBox, Priority.ALWAYS);
         courseBox.getItems().addAll("Web development and Hosting","Software development","Mobile development",
                 "Graphics design","SEO/Content creation");
-        nextButton.setOnAction(e->{
+        nextButton.setOnAction((ActionEvent e)->{
             try {
                 NewIntern newIntern = new NewIntern();
                 newIntern.addIntern(fullNameField, telephone_number, gender_male, gender_female, courseBox, datePicker);
+                telephone_number.clear();
+                fullNameField.clear();
+                courseBox.getSelectionModel().clearSelection();
+                emailField.clear();
+                gender_Group.getSelectedToggle().setSelected(false);
             } catch (SQLException ex) {
                 Logger.getLogger(AddAccount.class.getName()).log(Level.SEVERE, null, ex);
             }

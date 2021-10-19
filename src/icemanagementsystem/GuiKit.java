@@ -11,6 +11,9 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToolbar;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -41,7 +44,7 @@ public class GuiKit {
     private Preferences prefs;
 
     private Scene rootscene;
-    private BorderPane rootBorderPane;
+    public BorderPane rootBorderPane;
     private JFXToolbar rootToolbar;
     private MaterialDesignIconView addIcon;
     private MaterialDesignIconView settingIcon;
@@ -62,6 +65,9 @@ public class GuiKit {
     private MaterialDesignIconView iconView;
     private ScrollPane scrollPane;
     private Label info;
+    private JFXButton homeBtn;
+    private MaterialDesignIconView homeIcon;
+    private JFXButton searchTrigger;
 
     public Scene scene(Parent p) {
         tp = new ThemePainter();
@@ -86,26 +92,34 @@ public class GuiKit {
         internBox = new HBox();
         info = new Label();
         scrollPane = new ScrollPane();
-        ViewInterns interns = new ViewInterns();
+
         internStats iStats = new internStats();
+        imgFrame iFrame = new imgFrame();
         rootBorderPane = new BorderPane();
         rootBorderPane.getStyleClass().add("body");
         rootBorderPane.setTop(toolbar());
-        rootBorderPane.setCenter(interns.internsBox(internBox, internHome, scrollPane, info,iconView));
-        rootBorderPane.setRight(iStats.stats(statsHome, statsInfo, statsBox));
+        rootBorderPane.setCenter(iFrame.frame());
+        try {
+            rootBorderPane.setRight(iStats.stats(statsHome, statsInfo, statsBox));
+        } catch (SQLException ex) {
+            Logger.getLogger(GuiKit.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return rootBorderPane;
     }
 
     public JFXToolbar toolbar() {
-        MaterialDesignIconView searchBtnIcon = new MaterialDesignIconView(MaterialDesignIcon.BOOK_OPEN_PAGE_VARIANT, "30");
-        searchBtnIcon.getStyleClass().add("icons");
-        JFXButton searchBtn = new JFXButton(null);
-        searchBtn.setGraphic(searchBtnIcon);
+        homeIcon = new MaterialDesignIconView(MaterialDesignIcon.HOME, "30");
+        homeIcon.getStyleClass().add("icons");
         addIcon = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_PLUS, "30");
         addIcon.getStyleClass().add("icons");
         settingIcon = new MaterialDesignIconView(MaterialDesignIcon.SETTINGS, "30");
         settingIcon.getStyleClass().add("icons");
         searchIcon = new MaterialDesignIconView(MaterialDesignIcon.ACCOUNT_SEARCH, "30");
+        searchTrigger = new JFXButton("Name or whatsapp", searchIcon);
+        searchTrigger.setStyle("-fx-background-color: white; -fx-text-fill: black");
+        searchTrigger.setFocusTraversable(false);
+        searchTrigger.setPrefWidth(300);
+        searchTrigger.setAlignment(Pos.CENTER_LEFT);
         addIconBtn = new JFXButton();
         addIconBtn.setFocusTraversable(false);
         addIconBtn.setGraphic(addIcon);
@@ -130,7 +144,9 @@ public class GuiKit {
             stage.setTitle("Intern form");
             stage.setResizable(false);
             stage.setScene(addAccountScene);
-            stage.show();
+            stage.showAndWait();
+            AutoRefresh autoRefresh = new AutoRefresh();
+            autoRefresh.refresh(internBox, internHome, scrollPane, info, iconView, rootBorderPane);
         });
 
         settingIconBtn = new JFXButton();
@@ -157,12 +173,27 @@ public class GuiKit {
             stage.setScene(settingScene);
             stage.show();
         });
+        homeBtn = new JFXButton();
+        homeBtn.setFocusTraversable(false);
+        homeBtn.setGraphic(homeIcon);
+        homeBtn.setTooltip(new Tooltip("Back to home"));
+        homeBtn.getStyleClass().add("icon-buttons");
+        homeBtn.setOnAction(e -> {
+            imgFrame iFrame = new imgFrame();
+            rootBorderPane.setCenter(iFrame.frame());
+            rootToolbar.setCenter(searchTrigger);
+            settingIconBtn.setDisable(false);
+        });
 
         searchBox = new JFXTextField();
         searchBox.setFocusTraversable(false);
         searchBox.setPromptText("Search");
         searchBox.getStyleClass().addAll("text-field-AS", "jfx-text-field-AS");
-        HBox leftToolsBox = new HBox(addIconBtn, settingIconBtn);
+        DBSearch search = new DBSearch();
+        searchBox.setOnKeyReleased(e -> {
+            search.search(searchBox, rootBorderPane, internHome, internBox, info, iconView, settingIconBtn);
+        });
+        HBox leftToolsBox = new HBox(homeBtn, addIconBtn, settingIconBtn);
         searchBoxCover = new HBox();
         HBox.setHgrow(searchBox, Priority.ALWAYS);
         searchBoxCover.setPadding(new Insets(3));
@@ -172,12 +203,23 @@ public class GuiKit {
         searchBoxCover.setMaxWidth(300);
         searchBoxCover.setMaxHeight(30);
         searchBoxCover.setAlignment(Pos.BOTTOM_LEFT);
+        searchTrigger.setOnAction(e -> {
+            iconView = new MaterialDesignIconView();
+            internHome = new VBox();
+            internBox = new HBox();
+            info = new Label();
+            scrollPane = new ScrollPane();
+            rootToolbar.setCenter(searchBoxCover);
+            searchBox.setFocusTraversable(true);
+            ViewInterns interns = new ViewInterns();
+            rootBorderPane.setCenter(interns.internsBox(internBox, internHome, scrollPane, info, iconView));
+        });
 
         leftToolsBox.setPadding(new Insets(10));
         leftToolsBox.setSpacing(5);
         rootToolbar = new JFXToolbar();
         rootToolbar.setLeft(leftToolsBox);
-        rootToolbar.setCenter(searchBoxCover);
+        rootToolbar.setCenter(searchTrigger);
         rootToolbar.setMinWidth(900);
         return rootToolbar;
     }
@@ -219,6 +261,7 @@ public class GuiKit {
             container_theme.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
             scrollPane.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
             info.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
+            //--------------------------
             rootscene.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
             settingScene.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
             container_theme.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
@@ -240,6 +283,7 @@ public class GuiKit {
             scrollPane.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
             // for children in tab for theme(container_theme)
             container_theme.getStylesheets().remove(getClass().getResource("/icemanagementsystem/Stylers/lightTheme.css").toExternalForm());
+            //------------------------------
             rootscene.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
             settingScene.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
             container_theme.getStylesheets().add(getClass().getResource("/icemanagementsystem/Stylers/darkTheme.css").toExternalForm());
